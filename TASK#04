@@ -1,0 +1,44 @@
+QS#04:
+Analyze and visualize sentiment patterns in social media data to understand public opinion and attitudes towards specific topics or brands.
+
+dl = pd.read_csv(r"C:\Users\ARSALAN\INTERNHSIP\twitter_training.csv")
+dl.info
+dl.describe()
+dl.head(8)
+columns = ['id','country','Label','Text']
+dl = pd.read_csv(r"C:\Users\ARSALAN\INTERNHSIP\twitter_training.csv", names=columns)
+dl.columns
+pip install textblob
+dl.head(8)
+dl['Label'].value_counts()
+for i in range(5):
+    print(f"{i+1}: {dl['Text'][i]} -> {dl['Label'][i]}")
+dl.dropna(inplace=True)
+import pandas as pd
+from textblob import TextBlob
+
+
+# Perform sentiment analysis on the dataset
+sentiments = []
+
+# Assuming 'Text' is the column containing the text data
+for text_data in dl['Text']:
+    analysis = TextBlob(text_data)
+    sentiment = analysis.sentiment.polarity
+
+    if sentiment > 0:
+        sentiment_label = "positive"
+    elif sentiment < 0:
+        sentiment_label = "negative"
+    else:
+        sentiment_label = "neutral"
+
+    sentiments.append(sentiment_label)
+
+# Add the sentiment results to the DataFrame
+dl['Sentiment'] = sentiments
+
+sentiment_distribution = dl['Sentiment'].value_counts()
+print(sentiment_distribution)
+
+dl.head(20)
