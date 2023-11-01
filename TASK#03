@@ -1,0 +1,56 @@
+QS#3: Build a decision tree classifier to predict whether a customer will purchase a product or service based on their demographic and behavioral data. Use a dataset such as the Bank Marketing dataset from the UCI Machine Learning Repository.
+
+import pandas as pd
+dh = pd.read_csv(r"C:\Users\ARSALAN\INTERNHSIP\bank.csv")
+
+dh.info()
+dh.columns
+dh.describe()
+
+X = dh[['age', 'job', 'marital', 'education', 'default', 'balance', 'housing', 'loan', 'contact', 'day', 'month', 'duration', 'campaign', 'pdays', 'previous', 'poutcome']]
+y = dh['deposit']
+
+from sklearn.preprocessing import OneHotEncoder
+from sklearn.compose import ColumnTransformer
+
+# Define a list of categorical columns to one-hot encode
+categorical_columns = ['job', 'marital', 'education', 'default', 'housing', 'loan', 'contact', 'month', 'poutcome']
+
+# Create a column transformer to apply one-hot encoding to categorical columns
+preprocessor = ColumnTransformer(
+    transformers=[
+        ('cat', OneHotEncoder(), categorical_columns)
+    ],
+    remainder='passthrough'  # Pass through any non-categorical columns
+)
+
+# Apply the preprocessing to your feature matrix X
+X_preprocessed = preprocessor.fit_transform(X)
+
+# Now, you can split and train your decision tree classifier
+from sklearn.model_selection import train_test_split
+from sklearn.tree import DecisionTreeClassifier
+
+X_train, X_test, y_train, y_test = train_test_split(X_preprocessed, y, test_size=0.2, random_state=42)
+
+clf = DecisionTreeClassifier(max_depth=3)
+clf.fit(X_train, y_train)
+
+from sklearn.metrics import precision_score
+
+# Assuming 'yes' represents the positive class, so set pos_label='yes'
+precision = precision_score(y_test, y_pred, pos_label='yes')
+
+from sklearn.metrics import accuracy_score, precision_score, recall_score, f1_score
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+precision = precision_score(y_test, y_pred, pos_label='yes')
+recall = recall_score(y_test, y_pred, pos_label='yes')
+f1 = f1_score(y_test, y_pred, pos_label='yes')
+
+# Print the evaluation metrics
+print("Accuracy:", accuracy)
+print("Precision:", precision)
+print("Recall:", recall)
+print("F1 Score:", f1)
