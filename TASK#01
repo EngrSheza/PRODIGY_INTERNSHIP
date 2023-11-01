@@ -1,0 +1,29 @@
+QS: Create a bar chart or histogram to visualize the distribution of a categorical or continuous variable, such as the distribution of ages or genders in a population.
+
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+
+titanic_data = pd.read_csv(r"C:\Users\ARSALAN\INTERNHSIP\Titanic-Dataset.csv")
+
+# Example 1: Gender Distribution (Bar Chart)
+gender_counts = titanic_data['Sex'].value_counts()
+plt.figure(figsize=(6, 6))
+gender_counts.plot(kind='bar', color='salmon')
+plt.xlabel('Gender')
+plt.ylabel('Count')
+plt.title('Gender Distribution on the Titanic')
+plt.xticks(rotation=0)
+plt.show()
+
+# Example 2: Passenger Class Distribution (Bar Chart)
+class_counts = titanic_data['Pclass'].value_counts().sort_index()
+plt.figure(figsize=(6, 6))
+class_counts.plot(kind='bar', color='lightgreen')
+plt.xlabel('Class')
+plt.ylabel('Count')
+plt.title('Passenger Class Distribution on the Titanic')
+plt.xticks(rotation=0)
+plt.show()
+
